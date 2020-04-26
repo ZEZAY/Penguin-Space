@@ -11,7 +11,7 @@ public class ShipPicker extends VBox {
     private ImageView circleImage;
     private ImageView shipImage;
 
-    private String circleNotChoosen = "view/resources/shipchooser/grey_tickWhite.png";
+    private String circleNotChoosen = "view/resources/shipchooser/grey_circle.png";
     private String circleChoosen = "view/resources/shipchooser/yellow_boxTick.png";
 
     private SHIP ship;

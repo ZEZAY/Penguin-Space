@@ -10,9 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import model.InfoLabel;
-import model.ModelButton;
-import model.ModelSubscene;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +32,10 @@ public class ViewManeger {
     private ModelSubscene scoresSubScene;
     private ModelSubscene helpSubScene;
     private ModelSubscene creditsSubScene;
-
     private ModelSubscene sceneToHide;
+
+    List<ShipPicker> ships;
+    private  SHIP choosenShip;
 
     public ViewManeger() {
         menuButtons = new ArrayList<>();
@@ -45,7 +45,7 @@ public class ViewManeger {
         mainStage.setScene(mainScene);
 
         createSubscene();
-        createButtons();
+        createMenuButtons();
         createBackground();
         createLogo();
     }
@@ -73,6 +73,39 @@ public class ViewManeger {
         shipLabel.setLayoutX(110);
         shipLabel.setLayoutY(25);
         startSubScene.getPane().getChildren().add(shipLabel);
+        startSubScene.getPane().getChildren().add(createShipToChooser());
+        startSubScene.getPane().getChildren().add(createButtonToPlay());
+    }
+
+    private HBox createShipToChooser() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        ships = new ArrayList<>();
+        for (SHIP ship: SHIP.values()) {
+            ShipPicker shipToPicker = new ShipPicker(ship);
+            ships.add(shipToPicker);
+            hBox.getChildren().add(shipToPicker);
+
+            shipToPicker.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    for (ShipPicker sp: ships)
+                        sp.setIsCircleChoosen(false);
+                    shipToPicker.setIsCircleChoosen(true);
+                    choosenShip = shipToPicker.getShip();
+                }
+            });
+        }
+        hBox.setLayoutX(300 - (118*2));
+        hBox.setLayoutY(100);
+        return hBox;
+    }
+
+    private ModelButton createButtonToPlay() {
+        ModelButton btn = new ModelButton("PLAY");
+        btn.setLayoutX(350);
+        btn.setLayoutY(300);
+        return btn;
     }
 
     public Stage getMainStage() {
@@ -86,7 +119,7 @@ public class ViewManeger {
         mainPane.getChildren().add(btn);
     }
 
-    private void createButton(String txt) {
+    private void createMenuButton(String txt) {
         ModelButton btn = new ModelButton(txt);
         addMenuButton(btn);
 
@@ -116,12 +149,12 @@ public class ViewManeger {
         });
     }
 
-    private void createButtons() {
-        createButton("START");
-        createButton("SCORES");
-        createButton("HELP");
-        createButton("CREDITS");
-        createButton("EXIT");
+    private void createMenuButtons() {
+        createMenuButton("START");
+        createMenuButton("SCORES");
+        createMenuButton("HELP");
+        createMenuButton("CREDITS");
+        createMenuButton("EXIT");
     }
 
     private void createBackground() {
