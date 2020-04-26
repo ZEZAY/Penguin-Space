@@ -1,0 +1,19 @@
+# Default ignored files
+/.idea/workspace.xml
+# NOT check in to the git repository.
+*.class
+bin/
+build/
+out/
+.DS_[Ss]tore
+*.log
+
+# IDE files
+.idea
+*.iml
+*.ctxt
+.classpath
+classpath
+.settings
+.project
+.nbproject
