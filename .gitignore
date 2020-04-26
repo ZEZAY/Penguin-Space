@@ -1,6 +1,6 @@
 # Default ignored files
 /shelf/
-/workspace.xml
+/.idea/workspace.xml
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
@@ -41,7 +41,6 @@ bin/
 build/
 out/
 .DS_[Ss]tore
-.DS_Store
 .gitattributes
 
 # IDE files
