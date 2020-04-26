@@ -25,11 +25,14 @@ hs_err_pid*
 # Default ignored files
 /.idea/workspace.xml
 # NOT check in to the git repository.
+.idea
 *.class
 bin/
 build/
 out/
 .DS_[Ss]tore
+.DS_Store
+.gitattributes
 *.log
 
 # IDE files
