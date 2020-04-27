@@ -105,6 +105,16 @@ public class ViewManeger {
         ModelButton btn = new ModelButton("PLAY");
         btn.setLayoutX(350);
         btn.setLayoutY(300);
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (choosenShip != null) {
+                    GameViewManeger gm = new GameViewManeger();
+                    gm.createGame(mainStage, choosenShip);
+                }
+            }
+        });
         return btn;
     }
 
