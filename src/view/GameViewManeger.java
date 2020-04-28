@@ -50,7 +50,7 @@ public class GameViewManeger {
     private InfoGameLabel gameLabel;
     private ImageView[] playerLifes;
     private int playerLife;
-    private int score;
+    private static int score;
     private final static String STAR_IMAGE = "view/resources/star_gold.png";
 
     private final int SHIP_RADIUS = 45;
@@ -77,6 +77,14 @@ public class GameViewManeger {
     ImageView laserLI2 = new ImageView("view/resources/laser.png");
     ImageView laserBI2 = new ImageView("view/resources/laser.png");
     ImageView laserTI2 = new ImageView("view/resources/laser.png");
+
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
 
     public GameViewManeger() {
         initializeStage();

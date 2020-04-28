@@ -12,8 +12,7 @@ import javafx.stage.Stage;
 
 import model.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ViewManeger {
 
@@ -22,7 +21,6 @@ public class ViewManeger {
     private AnchorPane mainPane;
     private Scene mainScene;
     private Stage mainStage;
-
 
     private final static int MENU_BUTTONS_START_X = 96;
     private final static int MENU_BUTTONS_START_Y = 150;
@@ -34,8 +32,14 @@ public class ViewManeger {
     private ModelSubscene creditsSubScene;
     private ModelSubscene sceneToHide;
 
+    GameViewManeger gm = new GameViewManeger();
+
     List<ShipPicker> ships;
     private  SHIP choosenShip;
+
+    Map<ModelPlayer, String> scoreBoard = new TreeMap<>(new MapComparator());
+
+    private VBox vRankingBox = new VBox();
 
     public ViewManeger() {
         menuButtons = new ArrayList<>();
@@ -63,8 +67,10 @@ public class ViewManeger {
     }
 
     private void createSubscene() {
+        scoreBoard.put(new ModelPlayer("anonymous", 0),"anonymous");
+
         createShipChooserScene(); // startSubScene
-        scoresSubScene = new ModelSubscene();
+        createPlayerRankingScene(); // scoresSubScene
         helpSubScene = new ModelSubscene();
         creditsSubScene = new ModelSubscene();
 
@@ -105,6 +111,43 @@ public class ViewManeger {
         return hBox;
     }
 
+    private void createPlayerRankingScene(){
+        scoresSubScene = new ModelSubscene();
+        InfoLabel rankLabel = new InfoLabel("RANKING");
+        rankLabel.setLayoutX(110);
+        rankLabel.setLayoutY(25);
+        scoresSubScene.getPane().getChildren().add(rankLabel);
+        vRankingBox.setLayoutX(110);
+        vRankingBox.setLayoutY(100);
+        scoresSubScene.getPane().getChildren().add(vRankingBox);
+    }
+
+    private void updateRanking() {
+        if (gm.getScore()>0){
+            String name = "anonymous";
+            int scoreToSet = gm.getScore();
+            ModelPlayer player = new ModelPlayer(name, scoreToSet);
+            for (Map.Entry entey: scoreBoard.entrySet()){
+                if (player.equals(entey.getKey())){
+                    scoreBoard.remove(entey.getKey());
+                    player.setScore(Math.max(scoreToSet, ((ModelPlayer)entey.getKey()).getScore()));
+                    break;
+                }
+            }
+            scoreBoard.put(player, player.getName());
+            gm.setScore(0);
+        }
+        vRankingBox.getChildren().clear();
+        int n = 0;
+        for (Map.Entry entey: scoreBoard.entrySet()) {
+            n++;
+            InfoLabel rankLabel = new InfoLabel(((ModelPlayer)entey.getKey()).getScore()+" "+entey.getValue());
+            rankLabel.setLayoutX(110);
+            rankLabel.setLayoutY(50*n);
+            vRankingBox.getChildren().add(rankLabel);
+        }
+    }
+
     private ModelButton createButtonToPlay() {
         ModelButton btn = new ModelButton("PLAY");
         btn.setLayoutX(350);
@@ -114,7 +157,7 @@ public class ViewManeger {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (choosenShip != null) {
-                    GameViewManeger gm = new GameViewManeger();
+                    updateRanking();
                     gm.createGame(mainStage, choosenShip);
                 }
             }
@@ -141,6 +184,7 @@ public class ViewManeger {
                         showSubScene(startSubScene);
                         break;
                     case "SCORES":
+                        updateRanking();
                         showSubScene(scoresSubScene);
                         break;
                     case "HELP":
