@@ -53,6 +53,11 @@ public class GameViewManeger {
     private int score;
     private final static String STAR_IMAGE = "view/resources/star_gold.png";
 
+    private final int SHIP_RADIUS = 27;
+    private final int STAR_RADIUS = 12;
+    private final int METEOR_GREY_RADIUS = 20;
+    private final int METEOR_BROWN_RADIUS = 20;
+
     public GameViewManeger() {
         initializeStage();
         createKeyListeners();
@@ -134,18 +139,17 @@ public class GameViewManeger {
         setGameElementNewPosition(star);
         gamePane.getChildren().add(star);
 
-        gameLabel = new InfoGameLabel("POINTS: 00");
+        gameLabel = new InfoGameLabel("POINTS: ");
         gameLabel.setLayoutX(460);
         gameLabel.setLayoutY(20);
         gamePane.getChildren().add(gameLabel);
 
         playerLifes = new ImageView[3];
         for (int i = 0; i < playerLifes.length; i++) {
-            ImageView item = playerLifes[i];
-            item = new ImageView(choosenShip.getUrlPlayerLifeShip());
-            item.setLayoutX(455 + (i*50));
-            item.setLayoutY(80);
-            gamePane.getChildren().add(item);
+            playerLifes[i] = new ImageView(choosenShip.getUrlPlayerLifeShip());
+            playerLifes[i].setLayoutX(455 + (i*50));
+            playerLifes[i].setLayoutY(80);
+            gamePane.getChildren().add(playerLifes[i]);
         }
 
         greyMeteors = new ImageView[3];
@@ -200,6 +204,7 @@ public class GameViewManeger {
             public void handle(long l) {
                 moveBackground();
                 moveGameElement();
+                checkIfElementsCollide();
                 moveShip();
             }
         };
@@ -226,12 +231,10 @@ public class GameViewManeger {
             playerShip.setRotate(angle);
         }
         if (isUpKeyPressed) {
-            System.out.println(playerShip.getLayoutY());
             if (playerShip.getLayoutY() > 0)
                 playerShip.setLayoutY(playerShip.getLayoutY() - 3);
         }
         if (isDownKeyPressed) {
-            System.out.println(playerShip.getLayoutY());
             if (playerShip.getLayoutY() < GAME_HEIGHT-90)
                 playerShip.setLayoutY(playerShip.getLayoutY() + 3);
         }
@@ -259,5 +262,41 @@ public class GameViewManeger {
             gridPane1.setLayoutY(-1024);
         if (gridPane2.getLayoutY()>=1024)
             gridPane2.setLayoutY(-1024);
+    }
+
+    private void checkIfElementsCollide() {
+        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star)) {
+            setGameElementNewPosition(star);
+            score++;
+            gameLabel.setText("POINT: "+score);
+        }
+
+        for (int i = 0; i < brownMeteors.length ; i++) {
+            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, brownMeteors[i])) {
+                setGameElementNewPosition(brownMeteors[i]);
+                removePlayerLife();
+            }
+        }
+
+        for (int i = 0; i < greyMeteors.length ; i++) {
+            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteors[i])) {
+                setGameElementNewPosition(greyMeteors[i]);
+                removePlayerLife();
+            }
+        }
+    }
+
+    private void removePlayerLife() {
+        gamePane.getChildren().remove(playerLifes[playerLife]);
+        playerLife--;
+        if (playerLife < 0) {
+            gameStage.close();
+            gameTimer.stop();
+            menuStage.show();
+        }
+    }
+
+    private double calculateDistance(ImageView item1, ImageView item2) {
+        return Math.sqrt(Math.pow(item1.getLayoutX()-item2.getLayoutX(),2) + Math.pow(item1.getLayoutY()-item2.getLayoutY(),2));
     }
 }
