@@ -1,4 +1,5 @@
 yoyo 1000
+mr.compro 20
 me 8
 sese 5
 anonymous 4
