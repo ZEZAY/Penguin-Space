@@ -33,6 +33,7 @@ public class ViewManeger {
     private ModelSubscene sceneToHide;
 
     GameViewManeger gm = new GameViewManeger();
+    LoadDataFile loadDataFile = new LoadDataFile();
 
     List<ShipPicker> ships;
     private  SHIP choosenShip;
@@ -67,8 +68,6 @@ public class ViewManeger {
     }
 
     private void createSubscene() {
-        scoreBoard.put(new ModelPlayer("anonymous", 0),"anonymous");
-
         createShipChooserScene(); // startSubScene
         createPlayerRankingScene(); // scoresSubScene
         helpSubScene = new ModelSubscene();
@@ -120,11 +119,12 @@ public class ViewManeger {
         vRankingBox.setLayoutX(110);
         vRankingBox.setLayoutY(100);
         scoresSubScene.getPane().getChildren().add(vRankingBox);
+        scoreBoard.putAll(loadDataFile.loadMap());
     }
 
     private void updateRanking() {
         if (gm.getScore()>0){
-            String name = "anonymous";
+            String name = "sese";
             int scoreToSet = gm.getScore();
             ModelPlayer player = new ModelPlayer(name, scoreToSet);
             for (Map.Entry entey: scoreBoard.entrySet()){
@@ -146,6 +146,7 @@ public class ViewManeger {
             rankLabel.setLayoutY(50*n);
             vRankingBox.getChildren().add(rankLabel);
         }
+        loadDataFile.updateDataFile(scoreBoard);
     }
 
     private ModelButton createButtonToPlay() {
