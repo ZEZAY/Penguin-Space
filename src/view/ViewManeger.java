@@ -36,9 +36,11 @@ public class ViewManeger {
     LoadDataFile loadDataFile = new LoadDataFile();
 
     List<ShipPicker> ships;
-    private  SHIP choosenShip;
+    private SHIP choosenShip;
 
     Map<ModelPlayer, String> scoreBoard = new TreeMap<>(new MapComparator());
+    private String playerName;
+    InfoTextfield playerNameField;
 
     private VBox vRankingBox = new VBox();
 
@@ -78,10 +80,17 @@ public class ViewManeger {
 
     private void createShipChooserScene() {
         startSubScene = new ModelSubscene();
+
         InfoLabel shipLabel = new InfoLabel("CHOOSE YOUR SHIP");
         shipLabel.setLayoutX(110);
         shipLabel.setLayoutY(25);
         startSubScene.getPane().getChildren().add(shipLabel);
+
+        playerNameField = new InfoTextfield("Enter your name");
+        playerNameField.setLayoutX(10);
+        playerNameField.setLayoutY(300);
+        startSubScene.getPane().getChildren().add(playerNameField);
+
         startSubScene.getPane().getChildren().add(createShipToChooser());
         startSubScene.getPane().getChildren().add(createButtonToPlay());
     }
@@ -124,9 +133,8 @@ public class ViewManeger {
 
     private void updateRanking() {
         if (gm.getScore()>0){
-            String name = "sese";
             int scoreToSet = gm.getScore();
-            ModelPlayer player = new ModelPlayer(name, scoreToSet);
+            ModelPlayer player = new ModelPlayer(playerName, scoreToSet);
             for (Map.Entry entey: scoreBoard.entrySet()){
                 if (player.equals(entey.getKey())){
                     scoreBoard.remove(entey.getKey());
@@ -157,6 +165,9 @@ public class ViewManeger {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                playerName = playerNameField.getText().trim();
+                if (playerName.isEmpty())
+                    playerName = "unknow";
                 if (choosenShip != null) {
                     updateRanking();
                     gm.createGame(mainStage, choosenShip);
@@ -195,6 +206,7 @@ public class ViewManeger {
                         showSubScene(creditsSubScene);
                         break;
                     case "EXIT":
+                        updateRanking();
                         mainStage.close();
                         break;
                     default:
