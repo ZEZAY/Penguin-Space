@@ -1,7 +1,7 @@
 # FINAL PROJECT
 Penguin Space by `Nanthakarn Limkoool`
 
-[![Watch the video](img/projectImg.jpg)](https://youtu.be/kGb3s4zc65E)
+[![Watch the video](img/q1.gif)](https://youtu.be/kGb3s4zc65E)
 
 ## Description
 
