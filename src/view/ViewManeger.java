@@ -50,6 +50,10 @@ public class ViewManeger {
         createLogo();
     }
 
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
     private void showSubScene(ModelSubscene subScene) {
         if (sceneToHide != null) {
             sceneToHide.moveScene();
@@ -116,10 +120,6 @@ public class ViewManeger {
             }
         });
         return btn;
-    }
-
-    public Stage getMainStage() {
-        return mainStage;
     }
 
     private void addMenuButton(ModelButton btn) {

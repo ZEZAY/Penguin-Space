@@ -53,10 +53,30 @@ public class GameViewManeger {
     private int score;
     private final static String STAR_IMAGE = "view/resources/star_gold.png";
 
-    private final int SHIP_RADIUS = 27;
-    private final int STAR_RADIUS = 12;
-    private final int METEOR_GREY_RADIUS = 20;
-    private final int METEOR_BROWN_RADIUS = 20;
+    private final int SHIP_RADIUS = 45;
+    private final int STAR_RADIUS = 15;
+    private final int METEOR_GREY_RADIUS = 25;
+    private final int METEOR_BROWN_RADIUS = 15;
+
+    ImageView laserR = new ImageView("view/resources/laser.png");
+    ImageView laserL = new ImageView("view/resources/laser.png");
+    ImageView laserB = new ImageView("view/resources/laser.png");
+    ImageView laserT = new ImageView("view/resources/laser.png");
+
+    ImageView laserRI = new ImageView("view/resources/laser.png");
+    ImageView laserLI = new ImageView("view/resources/laser.png");
+    ImageView laserBI = new ImageView("view/resources/laser.png");
+    ImageView laserTI = new ImageView("view/resources/laser.png");
+
+    ImageView laserR2 = new ImageView("view/resources/laser.png");
+    ImageView laserL2 = new ImageView("view/resources/laser.png");
+    ImageView laserB2 = new ImageView("view/resources/laser.png");
+    ImageView laserT2 = new ImageView("view/resources/laser.png");
+
+    ImageView laserRI2 = new ImageView("view/resources/laser.png");
+    ImageView laserLI2 = new ImageView("view/resources/laser.png");
+    ImageView laserBI2 = new ImageView("view/resources/laser.png");
+    ImageView laserTI2 = new ImageView("view/resources/laser.png");
 
     public GameViewManeger() {
         initializeStage();
@@ -129,8 +149,27 @@ public class GameViewManeger {
         createPlayerShip(choosenShip);
         createGameElements(choosenShip);
 
+//        createLaser();
+
         createGameLoop();
         gameStage.show();
+    }
+
+    private void createGameLoop() {
+        gameTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                moveBackground();
+                moveGameElement();
+
+//                moveLaser();
+
+                checkIfElementsCollide();
+                moveShip();
+            }
+        };
+        isGameRunning = true;
+        gameTimer.start();
     }
 
     private void createGameElements(SHIP choosenShip) {
@@ -198,20 +237,6 @@ public class GameViewManeger {
         gamePane.getChildren().add(playerShip);
     }
 
-    private void createGameLoop() {
-        gameTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                moveBackground();
-                moveGameElement();
-                checkIfElementsCollide();
-                moveShip();
-            }
-        };
-        isGameRunning = true;
-        gameTimer.start();
-    }
-
     private void moveShip() {
         if (isLeftKeyPressed) {
             if (angle > -30) angle -= 5;
@@ -265,22 +290,22 @@ public class GameViewManeger {
     }
 
     private void checkIfElementsCollide() {
-        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star)) {
+        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star, 10,8)) {
             setGameElementNewPosition(star);
             score++;
             gameLabel.setText("POINT: "+score);
         }
 
-        for (int i = 0; i < brownMeteors.length ; i++) {
-            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, brownMeteors[i])) {
-                setGameElementNewPosition(brownMeteors[i]);
+        for (int i = 0; i < greyMeteors.length ; i++) {
+            if (METEOR_GREY_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteors[i], 18,15)) {
+                setGameElementNewPosition(greyMeteors[i]);
                 removePlayerLife();
             }
         }
 
-        for (int i = 0; i < greyMeteors.length ; i++) {
-            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteors[i])) {
-                setGameElementNewPosition(greyMeteors[i]);
+        for (int i = 0; i < brownMeteors.length ; i++) {
+            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, brownMeteors[i], 10, 8)) {
+                setGameElementNewPosition(brownMeteors[i]);
                 removePlayerLife();
             }
         }
@@ -296,7 +321,39 @@ public class GameViewManeger {
         }
     }
 
-    private double calculateDistance(ImageView item1, ImageView item2) {
-        return Math.sqrt(Math.pow(item1.getLayoutX()-item2.getLayoutX(),2) + Math.pow(item1.getLayoutY()-item2.getLayoutY(),2));
+    private double calculateDistance(ImageView ship, ImageView item, double needX, double needY) {
+        double x1 = ship.getLayoutX() + 40;
+        double x2 = item.getLayoutX() + needX;
+        double y1 = ship.getLayoutY() + 30;
+        double y2 = item.getLayoutY() + needY;
+        return Math.sqrt(Math.pow( x1 - x2, 2) + Math.pow( y1 - y2, 2));
+    }
+
+    private void createLaser(){
+        gamePane.getChildren().addAll(laserRI, laserBI, laserLI, laserTI);
+        gamePane.getChildren().addAll(laserR, laserB, laserL, laserT);
+        gamePane.getChildren().addAll(laserRI2, laserBI2, laserLI2, laserTI2);
+        gamePane.getChildren().addAll(laserR2, laserB2, laserL2, laserT2);
+    }
+
+    private void moveLaser(){
+        subMoveLaser(playerShip, SHIP_RADIUS, 40, 30, laserRI, laserBI, laserLI, laserTI);
+        subMoveLaser(star, STAR_RADIUS, 10, 8, laserR, laserB, laserL, laserT);
+        subMoveLaser(brownMeteors[0], METEOR_BROWN_RADIUS, 10, 8, laserRI2, laserBI2, laserLI2, laserTI2);
+        subMoveLaser(greyMeteors[0], METEOR_GREY_RADIUS, 18, 15, laserR2, laserB2, laserL2, laserT2);
+    }
+
+    private void subMoveLaser(ImageView item, int raduis, double needx, double needy, ImageView lR, ImageView lB,
+                              ImageView lL, ImageView lT){
+        double x = item.getLayoutX() + needx;
+        double y = item.getLayoutY() + needy;
+        lR.setLayoutX(x + (raduis));
+        lR.setLayoutY(y);
+        lL.setLayoutX(x - (raduis));
+        lL.setLayoutY(y);
+        lB.setLayoutY(y + (raduis));
+        lB.setLayoutX(x);
+        lT.setLayoutY(y - (raduis));
+        lT.setLayoutX(x);
     }
 }
