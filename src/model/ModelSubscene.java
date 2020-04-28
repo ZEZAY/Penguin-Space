@@ -8,9 +8,7 @@ import javafx.util.Duration;
 
 public class ModelSubscene extends SubScene {
 
-    private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
     private final String BACKGROUD_IMAGE = "model/resources/yellow_panel.png";
-
     private boolean isHidden;
 
     public ModelSubscene() {

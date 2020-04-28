@@ -8,10 +8,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.InfoGameLabel;
-import model.SHIP;
+import model.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameViewManeger {
@@ -32,7 +34,6 @@ public class GameViewManeger {
     private boolean isDownKeyPressed;
     private int angle;
     private AnimationTimer gameTimer;
-    private boolean isGameRunning;
 
     private GridPane gridPane1;
     private GridPane gridPane2;
@@ -58,25 +59,9 @@ public class GameViewManeger {
     private final int METEOR_GREY_RADIUS = 25;
     private final int METEOR_BROWN_RADIUS = 15;
 
-    ImageView laserR = new ImageView("view/resources/laser.png");
-    ImageView laserL = new ImageView("view/resources/laser.png");
-    ImageView laserB = new ImageView("view/resources/laser.png");
-    ImageView laserT = new ImageView("view/resources/laser.png");
-
-    ImageView laserRI = new ImageView("view/resources/laser.png");
-    ImageView laserLI = new ImageView("view/resources/laser.png");
-    ImageView laserBI = new ImageView("view/resources/laser.png");
-    ImageView laserTI = new ImageView("view/resources/laser.png");
-
-    ImageView laserR2 = new ImageView("view/resources/laser.png");
-    ImageView laserL2 = new ImageView("view/resources/laser.png");
-    ImageView laserB2 = new ImageView("view/resources/laser.png");
-    ImageView laserT2 = new ImageView("view/resources/laser.png");
-
-    ImageView laserRI2 = new ImageView("view/resources/laser.png");
-    ImageView laserLI2 = new ImageView("view/resources/laser.png");
-    ImageView laserBI2 = new ImageView("view/resources/laser.png");
-    ImageView laserTI2 = new ImageView("view/resources/laser.png");
+    private InfoLabel gameWordLabel;
+    private boolean isUseWordField;
+    List<Text> wordList;
 
     public int getScore(){
         return score;
@@ -111,10 +96,19 @@ public class GameViewManeger {
                     case DOWN:
                         isDownKeyPressed = true;
                         break;
+                    case ENTER:
+                        checkWordLabel();
+                        dispiayWordLabel();
+                        break;
+                    case BACK_SPACE:
+                        String have = gameWordLabel.getText();
+                        gameWordLabel.setText(have.substring(0, have.length()-1));
+                        break;
                     case ESCAPE:
-//                        if (isGameRunning) gameTimer.stop();
-//                        else gameTimer.start();
                         gameStage.close();
+                        break;
+                    default:
+                        gameWordLabel.setText(gameWordLabel.getText()+code.getChar());
                         break;
                 }
             }
@@ -154,13 +148,57 @@ public class GameViewManeger {
         this.menuStage.hide();
 
         createBackground();
+        createGameWordLabel();
         createPlayerShip(choosenShip);
         createGameElements(choosenShip);
 
-//        createLaser();
-
         createGameLoop();
         gameStage.show();
+    }
+
+    private void checkWordLabel() {
+        String word = gameWordLabel.getText();
+        gameWordLabel.setText("");
+        for (Text text: wordList) {
+            if (text.getText().equalsIgnoreCase(word)) {
+                wordList.remove(text);
+                gamePane.getChildren().remove(text);
+                score += word.length();
+                gameLabel.setText("POINT: "+score);
+                break;
+            }
+        }
+    }
+
+    private void createGameWordLabel() {
+        gameWordLabel = new InfoLabel("");
+        gameWordLabel.setLayoutX(25);
+        gameWordLabel.setLayoutY(90);
+        generateRandomWords(10);
+        isUseWordField = false;
+        dispiayWordLabel();
+    }
+
+    private void dispiayWordLabel() {
+        if (isUseWordField){
+            gamePane.getChildren().remove(gameWordLabel);
+            isUseWordField = false;
+        } else {
+            gamePane.getChildren().add(gameWordLabel);
+            isUseWordField = true;
+        }
+    }
+
+    private void generateRandomWords(int numberOfWords) {
+        wordList = new ArrayList<>();
+        Random random = new Random();
+        for(int i = 0; i < numberOfWords; i++) {
+            char[] word = new char[random.nextInt(8)+3];
+            for(int j = 0; j < word.length; j++)
+                word[j] = (char)('a' + random.nextInt(26));
+            InfoText text = new InfoText(new String(word));
+            wordList.add(text);
+        }
     }
 
     private void createGameLoop() {
@@ -170,13 +208,10 @@ public class GameViewManeger {
                 moveBackground();
                 moveGameElement();
 
-//                moveLaser();
-
                 checkIfElementsCollide();
                 moveShip();
             }
         };
-        isGameRunning = true;
         gameTimer.start();
     }
 
@@ -212,6 +247,11 @@ public class GameViewManeger {
             setGameElementNewPosition(brownMeteors[i]);
             gamePane.getChildren().add(brownMeteors[i]);
         }
+
+        for (Text word: wordList) {
+            setWordNewPosition(word);
+            gamePane.getChildren().add(word);
+        }
     }
 
     private void moveGameElement() {
@@ -225,17 +265,28 @@ public class GameViewManeger {
             item.setRotate(item.getRotate()+4);
             if (item.getLayoutY()>900) setGameElementNewPosition(item);
         }
+
         for (int i = 0; i < greyMeteors.length ; i++) {
             ImageView item = greyMeteors[i];
             item.setLayoutY(item.getLayoutY()+7);
             item.setRotate(item.getRotate()+4);
             if (item.getLayoutY()>900) setGameElementNewPosition(item);
         }
+
+        for (Text word: wordList) {
+            word.setLayoutY(word.getLayoutY()+2);
+            if (word.getLayoutY()>900) setWordNewPosition(word);
+        }
     }
 
     private void setGameElementNewPosition(ImageView img) {
         img.setLayoutX(randomPositionGenerators.nextInt(370));
         img.setLayoutY(-(randomPositionGenerators.nextInt(3200)+600));
+    }
+
+    private void setWordNewPosition(Text txt) {
+        txt.setLayoutX(randomPositionGenerators.nextInt(370));
+        txt.setLayoutY(-(randomPositionGenerators.nextInt(3200)+600));
     }
 
     private void createPlayerShip(SHIP choosenShip) {
@@ -335,33 +386,5 @@ public class GameViewManeger {
         double y1 = ship.getLayoutY() + 30;
         double y2 = item.getLayoutY() + needY;
         return Math.sqrt(Math.pow( x1 - x2, 2) + Math.pow( y1 - y2, 2));
-    }
-
-    private void createLaser(){
-        gamePane.getChildren().addAll(laserRI, laserBI, laserLI, laserTI);
-        gamePane.getChildren().addAll(laserR, laserB, laserL, laserT);
-        gamePane.getChildren().addAll(laserRI2, laserBI2, laserLI2, laserTI2);
-        gamePane.getChildren().addAll(laserR2, laserB2, laserL2, laserT2);
-    }
-
-    private void moveLaser(){
-        subMoveLaser(playerShip, SHIP_RADIUS, 40, 30, laserRI, laserBI, laserLI, laserTI);
-        subMoveLaser(star, STAR_RADIUS, 10, 8, laserR, laserB, laserL, laserT);
-        subMoveLaser(brownMeteors[0], METEOR_BROWN_RADIUS, 10, 8, laserRI2, laserBI2, laserLI2, laserTI2);
-        subMoveLaser(greyMeteors[0], METEOR_GREY_RADIUS, 18, 15, laserR2, laserB2, laserL2, laserT2);
-    }
-
-    private void subMoveLaser(ImageView item, int raduis, double needx, double needy, ImageView lR, ImageView lB,
-                              ImageView lL, ImageView lT){
-        double x = item.getLayoutX() + needx;
-        double y = item.getLayoutY() + needy;
-        lR.setLayoutX(x + (raduis));
-        lR.setLayoutY(y);
-        lL.setLayoutX(x - (raduis));
-        lL.setLayoutY(y);
-        lB.setLayoutY(y + (raduis));
-        lB.setLayoutX(x);
-        lT.setLayoutY(y - (raduis));
-        lT.setLayoutX(x);
     }
 }

@@ -40,7 +40,7 @@ public class ViewManeger {
 
     Map<ModelPlayer, String> scoreBoard = new TreeMap<>(new MapComparator());
     private String playerName;
-    InfoTextfield playerNameField;
+    private InfoTextfield playerNameField;
 
     private VBox vRankingBox = new VBox();
 
