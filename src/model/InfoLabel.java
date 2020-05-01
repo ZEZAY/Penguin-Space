@@ -33,9 +33,9 @@ public class InfoLabel extends Label {
 
     private void setLabelFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)),23));
-        } catch (FileNotFoundException e){
-            setFont(Font.font(("Verdana"),23));
+            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));
+        } catch (FileNotFoundException e) {
+            setFont(Font.font(("Verdana"), 23));
         }
     }
 }

@@ -63,11 +63,11 @@ public class GameViewManeger {
     private boolean isUseWordField;
     List<Text> wordList;
 
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 
-    public void setScore(int score){
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -102,13 +102,13 @@ public class GameViewManeger {
                         break;
                     case BACK_SPACE:
                         String have = gameWordLabel.getText();
-                        gameWordLabel.setText(have.substring(0, have.length()-1));
+                        gameWordLabel.setText(have.substring(0, have.length() - 1));
                         break;
                     case ESCAPE:
                         gameStage.close();
                         break;
                     default:
-                        gameWordLabel.setText(gameWordLabel.getText()+code.getChar());
+                        gameWordLabel.setText(gameWordLabel.getText() + code.getChar());
                         break;
                 }
             }
@@ -159,12 +159,12 @@ public class GameViewManeger {
     private void checkWordLabel() {
         String word = gameWordLabel.getText();
         gameWordLabel.setText("");
-        for (Text text: wordList) {
+        for (Text text : wordList) {
             if (text.getText().equalsIgnoreCase(word)) {
                 wordList.remove(text);
                 gamePane.getChildren().remove(text);
                 score += word.length();
-                gameLabel.setText("POINT: "+score);
+                gameLabel.setText("POINT: " + score);
                 break;
             }
         }
@@ -180,7 +180,7 @@ public class GameViewManeger {
     }
 
     private void dispiayWordLabel() {
-        if (isUseWordField){
+        if (isUseWordField) {
             gamePane.getChildren().remove(gameWordLabel);
             isUseWordField = false;
         } else {
@@ -192,10 +192,10 @@ public class GameViewManeger {
     private void generateRandomWords(int numberOfWords) {
         wordList = new ArrayList<>();
         Random random = new Random();
-        for(int i = 0; i < numberOfWords; i++) {
-            char[] word = new char[random.nextInt(8)+3];
-            for(int j = 0; j < word.length; j++)
-                word[j] = (char)('a' + random.nextInt(26));
+        for (int i = 0; i < numberOfWords; i++) {
+            char[] word = new char[random.nextInt(8) + 3];
+            for (int j = 0; j < word.length; j++)
+                word[j] = (char) ('a' + random.nextInt(26));
             InfoText text = new InfoText(new String(word));
             wordList.add(text);
         }
@@ -229,7 +229,7 @@ public class GameViewManeger {
         playerLifes = new ImageView[3];
         for (int i = 0; i < playerLifes.length; i++) {
             playerLifes[i] = new ImageView(choosenShip.getUrlPlayerLifeShip());
-            playerLifes[i].setLayoutX(455 + (i*50));
+            playerLifes[i].setLayoutX(455 + (i * 50));
             playerLifes[i].setLayoutY(80);
             gamePane.getChildren().add(playerLifes[i]);
         }
@@ -248,7 +248,7 @@ public class GameViewManeger {
             gamePane.getChildren().add(brownMeteors[i]);
         }
 
-        for (Text word: wordList) {
+        for (Text word : wordList) {
             setWordNewPosition(word);
             gamePane.getChildren().add(word);
         }
@@ -257,61 +257,69 @@ public class GameViewManeger {
     private void moveGameElement() {
 
         star.setLayoutY(star.getLayoutY() + 5);
-        if (star.getLayoutY()>900) setGameElementNewPosition(star);
+        if (star.getLayoutY() > 900)
+            setGameElementNewPosition(star);
 
-        for (int i = 0; i < brownMeteors.length ; i++) {
+        for (int i = 0; i < brownMeteors.length; i++) {
             ImageView item = brownMeteors[i];
-            item.setLayoutY(item.getLayoutY()+7);
-            item.setRotate(item.getRotate()+4);
-            if (item.getLayoutY()>900) setGameElementNewPosition(item);
+            item.setLayoutY(item.getLayoutY() + 7);
+            item.setRotate(item.getRotate() + 4);
+            if (item.getLayoutY() > 900)
+                setGameElementNewPosition(item);
         }
 
-        for (int i = 0; i < greyMeteors.length ; i++) {
+        for (int i = 0; i < greyMeteors.length; i++) {
             ImageView item = greyMeteors[i];
-            item.setLayoutY(item.getLayoutY()+7);
-            item.setRotate(item.getRotate()+4);
-            if (item.getLayoutY()>900) setGameElementNewPosition(item);
+            item.setLayoutY(item.getLayoutY() + 7);
+            item.setRotate(item.getRotate() + 4);
+            if (item.getLayoutY() > 900)
+                setGameElementNewPosition(item);
         }
 
-        for (Text word: wordList) {
-            word.setLayoutY(word.getLayoutY()+2);
-            if (word.getLayoutY()>900) setWordNewPosition(word);
+        for (Text word : wordList) {
+            word.setLayoutY(word.getLayoutY() + 2);
+            if (word.getLayoutY() > 900)
+                setWordNewPosition(word);
         }
     }
 
     private void setGameElementNewPosition(ImageView img) {
         img.setLayoutX(randomPositionGenerators.nextInt(370));
-        img.setLayoutY(-(randomPositionGenerators.nextInt(3200)+600));
+        img.setLayoutY(-(randomPositionGenerators.nextInt(3200) + 600));
     }
 
     private void setWordNewPosition(Text txt) {
         txt.setLayoutX(randomPositionGenerators.nextInt(370));
-        txt.setLayoutY(-(randomPositionGenerators.nextInt(3200)+600));
+        txt.setLayoutY(-(randomPositionGenerators.nextInt(3200) + 600));
     }
 
     private void createPlayerShip(SHIP choosenShip) {
         playerShip = new ImageView(choosenShip.getUrlShip());
-        playerShip.setLayoutX(GAME_WIDTH/2);
+        playerShip.setLayoutX(GAME_WIDTH / 2);
         playerShip.setLayoutY(GAME_HEIGHT - 90);
         gamePane.getChildren().add(playerShip);
     }
 
     private void moveShip() {
         if (isLeftKeyPressed) {
-            if (angle > -30) angle -= 5;
+            if (angle > -30)
+                angle -= 5;
             playerShip.setRotate(angle);
             if (playerShip.getLayoutX() > -20)
                 playerShip.setLayoutX(playerShip.getLayoutX() - 3);
         }
         if (isRightKeyPressed) {
-            if (angle < 30) angle += 5;
+            if (angle < 30)
+                angle += 5;
             playerShip.setRotate(angle);
             if (playerShip.getLayoutX() < 522)
                 playerShip.setLayoutX(playerShip.getLayoutX() + 3);
         }
         if (!isRightKeyPressed && !isLeftKeyPressed) {
-            if (angle < 0) angle += 5;
-            if (angle > 0) angle -= 5;
+            if (angle < 0)
+                angle += 5;
+            if (angle > 0)
+                angle -= 5;
             playerShip.setRotate(angle);
         }
         if (isUpKeyPressed) {
@@ -319,7 +327,7 @@ public class GameViewManeger {
                 playerShip.setLayoutY(playerShip.getLayoutY() - 3);
         }
         if (isDownKeyPressed) {
-            if (playerShip.getLayoutY() < GAME_HEIGHT-90)
+            if (playerShip.getLayoutY() < GAME_HEIGHT - 90)
                 playerShip.setLayoutY(playerShip.getLayoutY() + 3);
         }
     }
@@ -327,11 +335,11 @@ public class GameViewManeger {
     private void createBackground() {
         gridPane1 = new GridPane();
         gridPane2 = new GridPane();
-        for (int i = 0; i < 12 ; i++) {
+        for (int i = 0; i < 12; i++) {
             ImageView bg1 = new ImageView(BACKGROUD_IMAGE);
             ImageView bg2 = new ImageView(BACKGROUD_IMAGE);
-            GridPane.setConstraints(bg1, i%3, i/3);
-            GridPane.setConstraints(bg2, i%3, i/3);
+            GridPane.setConstraints(bg1, i % 3, i / 3);
+            GridPane.setConstraints(bg2, i % 3, i / 3);
             gridPane1.getChildren().add(bg1);
             gridPane2.getChildren().add(bg2);
         }
@@ -342,27 +350,27 @@ public class GameViewManeger {
     private void moveBackground() {
         gridPane1.setLayoutY(gridPane1.getLayoutY() + 0.5);
         gridPane2.setLayoutY(gridPane2.getLayoutY() + 0.5);
-        if (gridPane1.getLayoutY()>=1024)
+        if (gridPane1.getLayoutY() >= 1024)
             gridPane1.setLayoutY(-1024);
-        if (gridPane2.getLayoutY()>=1024)
+        if (gridPane2.getLayoutY() >= 1024)
             gridPane2.setLayoutY(-1024);
     }
 
     private void checkIfElementsCollide() {
-        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star, 10,8)) {
+        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star, 10, 8)) {
             setGameElementNewPosition(star);
             score++;
-            gameLabel.setText("POINT: "+score);
+            gameLabel.setText("POINT: " + score);
         }
 
-        for (int i = 0; i < greyMeteors.length ; i++) {
-            if (METEOR_GREY_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteors[i], 18,15)) {
+        for (int i = 0; i < greyMeteors.length; i++) {
+            if (METEOR_GREY_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteors[i], 18, 15)) {
                 setGameElementNewPosition(greyMeteors[i]);
                 removePlayerLife();
             }
         }
 
-        for (int i = 0; i < brownMeteors.length ; i++) {
+        for (int i = 0; i < brownMeteors.length; i++) {
             if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, brownMeteors[i], 10, 8)) {
                 setGameElementNewPosition(brownMeteors[i]);
                 removePlayerLife();
@@ -385,6 +393,6 @@ public class GameViewManeger {
         double x2 = item.getLayoutX() + needX;
         double y1 = ship.getLayoutY() + 30;
         double y2 = item.getLayoutY() + needY;
-        return Math.sqrt(Math.pow( x1 - x2, 2) + Math.pow( y1 - y2, 2));
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 }

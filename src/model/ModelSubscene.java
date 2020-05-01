@@ -28,13 +28,12 @@ public class ModelSubscene extends SubScene {
     }
 
     public void moveScene() {
-        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3),this);
+        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
 
-        if (isHidden){
+        if (isHidden) {
             tt.setToX(-676);
             isHidden = false;
-        }
-        else {
+        } else {
             tt.setToX(0);
             isHidden = true;
         }

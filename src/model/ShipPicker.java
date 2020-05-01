@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-
 public class ShipPicker extends VBox {
 
     private ImageView circleImage;
@@ -26,7 +25,7 @@ public class ShipPicker extends VBox {
 
         setAlignment(Pos.CENTER);
         setSpacing(20);
-        getChildren().addAll(circleImage,shipImage);
+        getChildren().addAll(circleImage, shipImage);
     }
 
     public SHIP getShip() {

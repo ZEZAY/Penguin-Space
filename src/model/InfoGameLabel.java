@@ -23,7 +23,7 @@ public class InfoGameLabel extends Label {
         setPrefWidth(130);
         setPrefHeight(50);
         setAlignment(Pos.CENTER_LEFT);
-        setPadding(new Insets(10,10,10,10));
+        setPadding(new Insets(10, 10, 10, 10));
         setText(txt);
         setLabelFont();
 
@@ -34,9 +34,9 @@ public class InfoGameLabel extends Label {
 
     private void setLabelFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)),16));
-        } catch (FileNotFoundException e){
-            setFont(Font.font(("Verdana"),16));
+            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 16));
+        } catch (FileNotFoundException e) {
+            setFont(Font.font(("Verdana"), 16));
         }
     }
 }

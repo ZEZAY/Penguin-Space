@@ -12,11 +12,10 @@ import java.io.FileNotFoundException;
 
 public class ModelButton extends Button {
     private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
-    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url" +
-            "('model/resources/yellow_button_pressed.png');";
-    final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url" +
-            "('model/resources/yellow_button.png');";
-
+    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
+            + "('model/resources/yellow_button_pressed.png');";
+    final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
+            + "('model/resources/yellow_button.png');";
 
     public ModelButton(String txt) {
         setText(txt);

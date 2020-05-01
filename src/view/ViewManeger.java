@@ -73,7 +73,7 @@ public class ViewManeger {
     private void createSubscene() {
         createShipChooserScene(); // startSubScene
         createPlayerRankingScene(); // scoresSubScene
-        helpSubScene = new ModelSubscene();
+        createHelpScene(); // helpSubScene
         createCreditsScene(); // creditsSubScene
 
         mainPane.getChildren().addAll(startSubScene, scoresSubScene, helpSubScene, creditsSubScene);
@@ -100,7 +100,7 @@ public class ViewManeger {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
         ships = new ArrayList<>();
-        for (SHIP ship: SHIP.values()) {
+        for (SHIP ship : SHIP.values()) {
             ShipPicker shipToPicker = new ShipPicker(ship);
             ships.add(shipToPicker);
             hBox.getChildren().add(shipToPicker);
@@ -108,88 +108,16 @@ public class ViewManeger {
             shipToPicker.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    for (ShipPicker sp: ships)
+                    for (ShipPicker sp : ships)
                         sp.setIsCircleChoosen(false);
                     shipToPicker.setIsCircleChoosen(true);
                     choosenShip = shipToPicker.getShip();
                 }
             });
         }
-        hBox.setLayoutX(300 - (118*2));
+        hBox.setLayoutX(300 - (118 * 2));
         hBox.setLayoutY(100);
         return hBox;
-    }
-
-    private void createPlayerRankingScene(){
-        scoresSubScene = new ModelSubscene();
-        InfoLabel rankLabel = new InfoLabel("RANKING");
-        rankLabel.setLayoutX(110);
-        rankLabel.setLayoutY(25);
-        scoresSubScene.getPane().getChildren().add(rankLabel);
-        vRankingBox.setLayoutX(110);
-        vRankingBox.setLayoutY(100);
-        scoresSubScene.getPane().getChildren().add(vRankingBox);
-        scoreBoard.putAll(loadDataFile.loadMap());
-    }
-
-    private void updateRanking() {
-        if (gm.getScore()>0){
-            int scoreToSet = gm.getScore();
-            ModelPlayer player = new ModelPlayer(playerName, scoreToSet);
-            for (Map.Entry entey: scoreBoard.entrySet()){
-                if (player.equals(entey.getKey())){
-                    scoreBoard.remove(entey.getKey());
-                    player.setScore(Math.max(scoreToSet, ((ModelPlayer)entey.getKey()).getScore()));
-                    break;
-                }
-            }
-            scoreBoard.put(player, player.getName());
-            gm.setScore(0);
-        }
-        vRankingBox.getChildren().clear();
-        int n = 0;
-        for (Map.Entry entey: scoreBoard.entrySet()) {
-            n++;
-            InfoLabel rankLabel = new InfoLabel(((ModelPlayer)entey.getKey()).getScore()+" "+entey.getValue());
-            rankLabel.setLayoutX(110);
-            rankLabel.setLayoutY(50*n);
-            vRankingBox.getChildren().add(rankLabel);
-        }
-        loadDataFile.updateDataFile(scoreBoard);
-    }
-
-    private void createCreditsScene(){
-        creditsSubScene = new ModelSubscene();
-        InfoLabel creditsLabel = new InfoLabel("CREDITS");
-        creditsLabel.setLayoutX(110);
-        creditsLabel.setLayoutY(25);
-        creditsSubScene.getPane().getChildren().add(creditsLabel);
-
-        ImageView penguin = new ImageView("view/resources/penguin.png");
-        penguin.setLayoutX(0);
-        penguin.setLayoutY(70);
-        creditsSubScene.getPane().getChildren().add(penguin);
-
-        ImageView creditsTag = new ImageView("view/resources/credits_tag.png");
-        creditsTag.setLayoutX(300);
-        creditsTag.setLayoutY(80);
-        creditsSubScene.getPane().getChildren().add(creditsTag);
-
-        AnimationTimer penguinRun = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                if (penguin.getLayoutX()>800) {
-                    penguin.setLayoutX(-300);
-                }
-                if (creditsTag.getLayoutX()>600) {
-                    creditsTag.setLayoutX(-500);
-                }
-                penguin.setLayoutX(penguin.getLayoutX() + 3);
-                penguin.setRotate(penguin.getRotate() + 2);
-                creditsTag.setLayoutX(creditsTag.getLayoutX() + 3);
-            }
-        };
-        penguinRun.start();
     }
 
     private ModelButton createButtonToPlay() {
@@ -212,9 +140,109 @@ public class ViewManeger {
         return btn;
     }
 
+    private void createPlayerRankingScene() {
+        scoresSubScene = new ModelSubscene();
+        InfoLabel rankLabel = new InfoLabel("RANKING");
+        rankLabel.setLayoutX(110);
+        rankLabel.setLayoutY(25);
+        scoresSubScene.getPane().getChildren().add(rankLabel);
+        vRankingBox.setLayoutX(110);
+        vRankingBox.setLayoutY(100);
+        scoresSubScene.getPane().getChildren().add(vRankingBox);
+        scoreBoard.putAll(loadDataFile.loadMap());
+    }
+
+    private void updateRanking() {
+        if (gm.getScore() > 0) {
+            int scoreToSet = gm.getScore();
+            ModelPlayer player = new ModelPlayer(playerName, scoreToSet);
+            for (Map.Entry entey : scoreBoard.entrySet()) {
+                if (player.equals(entey.getKey())) {
+                    scoreBoard.remove(entey.getKey());
+                    player.setScore(Math.max(scoreToSet, ((ModelPlayer) entey.getKey()).getScore()));
+                    break;
+                }
+            }
+            scoreBoard.put(player, player.getName());
+            gm.setScore(0);
+        }
+        vRankingBox.getChildren().clear();
+        int n = 0;
+        for (Map.Entry entey : scoreBoard.entrySet()) {
+            n++;
+            InfoLabel rankLabel = new InfoLabel(((ModelPlayer) entey.getKey()).getScore() + " " + entey.getValue());
+            rankLabel.setLayoutX(110);
+            rankLabel.setLayoutY(50 * n);
+            vRankingBox.getChildren().add(rankLabel);
+        }
+        loadDataFile.updateDataFile(scoreBoard);
+    }
+
+    private void createCreditsScene() {
+        creditsSubScene = new ModelSubscene();
+        InfoLabel creditsLabel = new InfoLabel("CREDITS");
+        creditsLabel.setLayoutX(110);
+        creditsLabel.setLayoutY(25);
+        creditsSubScene.getPane().getChildren().add(creditsLabel);
+
+        ImageView penguin = new ImageView("view/resources/penguin.png");
+        penguin.setLayoutX(0);
+        penguin.setLayoutY(70);
+        creditsSubScene.getPane().getChildren().add(penguin);
+
+        ImageView creditsTag = new ImageView("view/resources/credits_tag.png");
+        creditsTag.setLayoutX(300);
+        creditsTag.setLayoutY(80);
+        creditsSubScene.getPane().getChildren().add(creditsTag);
+
+        AnimationTimer penguinRun = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (penguin.getLayoutX() > 800) {
+                    penguin.setLayoutX(-300);
+                }
+                if (creditsTag.getLayoutX() > 600) {
+                    creditsTag.setLayoutX(-500);
+                }
+                penguin.setLayoutX(penguin.getLayoutX() + 3);
+                penguin.setRotate(penguin.getRotate() + 2);
+                creditsTag.setLayoutX(creditsTag.getLayoutX() + 3);
+            }
+        };
+        penguinRun.start();
+    }
+
+    private void createHelpScene() {
+        helpSubScene = new ModelSubscene();
+        InfoLabel helpLabel = new InfoLabel("HELP");
+        helpLabel.setLayoutX(110);
+        helpLabel.setLayoutY(25);
+        helpSubScene.getPane().getChildren().add(helpLabel);
+
+        ImageView helpImg = new ImageView("view/resources/how_to_play.png");
+        helpImg.setLayoutX(0);
+        helpImg.setLayoutY(0);
+        helpSubScene.getPane().getChildren().add(helpImg);
+
+        ModelButton buttonToSlide = new ModelButton("NEXT");
+        buttonToSlide.setLayoutX(50);
+        buttonToSlide.setLayoutY(350);
+        buttonToSlide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (helpImg.getLayoutX() > -233) {
+                    helpImg.setLayoutX(helpImg.getLayoutX() - 233);
+                } else {
+                    helpImg.setLayoutX(0);
+                }
+            }
+        });
+        helpSubScene.getPane().getChildren().add(buttonToSlide);
+    }
+
     private void addMenuButton(ModelButton btn) {
         btn.setLayoutX(MENU_BUTTONS_START_X);
-        btn.setLayoutY(MENU_BUTTONS_START_Y + menuButtons.size()*100);
+        btn.setLayoutY(MENU_BUTTONS_START_Y + menuButtons.size() * 100);
         menuButtons.add(btn);
         mainPane.getChildren().add(btn);
     }
@@ -261,8 +289,8 @@ public class ViewManeger {
 
     private void createBackground() {
         Image BackgroundImage = new Image("view/resources/background_black.png", 256, 256, false, true);
-        BackgroundImage Background = new BackgroundImage(BackgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-                BackgroundPosition.DEFAULT, null);
+        BackgroundImage Background = new BackgroundImage(BackgroundImage, BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(Background));
     }
 
