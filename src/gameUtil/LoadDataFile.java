@@ -1,7 +1,6 @@
-package view;
+package gameUtil;
 
 import model.ModelPlayer;
-
 import java.io.*;
 import java.util.Map;
 import java.util.TreeMap;

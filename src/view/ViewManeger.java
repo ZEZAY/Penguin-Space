@@ -1,5 +1,7 @@
 package view;
 
+import gameUtil.LoadDataFile;
+import gameUtil.MapComparator;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

@@ -1,7 +1,6 @@
-package view;
+package gameUtil;
 
 import model.ModelPlayer;
-
 import java.util.Comparator;
 
 public class MapComparator implements Comparator<ModelPlayer> {

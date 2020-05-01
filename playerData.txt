@@ -1,5 +1,7 @@
 yoyo 1000
 mr.compro 20
+unknow 15
+guita 10
 me 8
 sese 5
 anonymous 4
