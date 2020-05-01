@@ -1,5 +1,6 @@
 package view;
 
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -73,7 +74,7 @@ public class ViewManeger {
         createShipChooserScene(); // startSubScene
         createPlayerRankingScene(); // scoresSubScene
         helpSubScene = new ModelSubscene();
-        creditsSubScene = new ModelSubscene();
+        createCreditsScene(); // creditsSubScene
 
         mainPane.getChildren().addAll(startSubScene, scoresSubScene, helpSubScene, creditsSubScene);
     }
@@ -155,6 +156,40 @@ public class ViewManeger {
             vRankingBox.getChildren().add(rankLabel);
         }
         loadDataFile.updateDataFile(scoreBoard);
+    }
+
+    private void createCreditsScene(){
+        creditsSubScene = new ModelSubscene();
+        InfoLabel creditsLabel = new InfoLabel("CREDITS");
+        creditsLabel.setLayoutX(110);
+        creditsLabel.setLayoutY(25);
+        creditsSubScene.getPane().getChildren().add(creditsLabel);
+
+        ImageView penguin = new ImageView("view/resources/penguin.png");
+        penguin.setLayoutX(0);
+        penguin.setLayoutY(70);
+        creditsSubScene.getPane().getChildren().add(penguin);
+
+        ImageView creditsTag = new ImageView("view/resources/credits_tag.png");
+        creditsTag.setLayoutX(300);
+        creditsTag.setLayoutY(80);
+        creditsSubScene.getPane().getChildren().add(creditsTag);
+
+        AnimationTimer penguinRun = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (penguin.getLayoutX()>800) {
+                    penguin.setLayoutX(-300);
+                }
+                if (creditsTag.getLayoutX()>600) {
+                    creditsTag.setLayoutX(-500);
+                }
+                penguin.setLayoutX(penguin.getLayoutX() + 3);
+                penguin.setRotate(penguin.getRotate() + 2);
+                creditsTag.setLayoutX(creditsTag.getLayoutX() + 3);
+            }
+        };
+        penguinRun.start();
     }
 
     private ModelButton createButtonToPlay() {
