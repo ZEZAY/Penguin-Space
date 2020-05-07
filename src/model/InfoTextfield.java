@@ -13,11 +13,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * InfoTextfield is a TextField class for this game.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class InfoTextfield extends TextField {
 
+    // string represent data file path
     private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
     private final String BACKGROUD_IMAGE = "view/resources/yellow_small_panel.png";
 
+    /**
+     * TextField for get and displaying txt
+     * 
+     * @param txt to display
+     */
     public InfoTextfield(String txt) {
         setPrefWidth(380);
         setPrefHeight(49);
@@ -30,6 +41,7 @@ public class InfoTextfield extends TextField {
         setBackground(new Background(bg));
     }
 
+    /** Set Font */
     private void setTextfieldFont() {
         try {
             setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));

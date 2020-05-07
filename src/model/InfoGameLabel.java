@@ -14,11 +14,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * InfoGameLabel is a Label class for this game.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class InfoGameLabel extends Label {
 
     private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
     private final String BACKGROUD_IMAGE = "view/resources/info_label.png";
 
+    /**
+     * Label for displaying txt
+     * 
+     * @param txt to display
+     */
     public InfoGameLabel(String txt) {
         setPrefWidth(130);
         setPrefHeight(50);
@@ -32,6 +42,7 @@ public class InfoGameLabel extends Label {
         setBackground(new Background(bg));
     }
 
+    /** Set Font */
     private void setLabelFont() {
         try {
             setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 16));

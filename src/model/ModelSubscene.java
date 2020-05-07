@@ -6,9 +6,17 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+/**
+ * ModelSubscene is a SubScene class to slide this game menu.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class ModelSubscene extends SubScene {
 
+    // string represent data file path
     private final String BACKGROUD_IMAGE = "model/resources/yellow_panel.png";
+
+    /** true when this Subscene is Hidden from the main Scene */
     private boolean isHidden;
 
     public ModelSubscene() {
@@ -27,6 +35,7 @@ public class ModelSubscene extends SubScene {
         setLayoutY(180);
     }
 
+    /** Slide this Scene to show/hide */
     public void moveScene() {
         TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
 
@@ -40,6 +49,11 @@ public class ModelSubscene extends SubScene {
         tt.play();
     }
 
+    /**
+     * Return AnchorPane of this root
+     * 
+     * @return AnchorPane of this root
+     */
     public AnchorPane getPane() {
         return (AnchorPane) this.getRoot();
     }

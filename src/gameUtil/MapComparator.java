@@ -1,8 +1,13 @@
-package gameUtil;
+package gameutil;
 
 import model.ModelPlayer;
 import java.util.Comparator;
 
+/**
+ * MapComparator is Comparator for ModelPlayer.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class MapComparator implements Comparator<ModelPlayer> {
     @Override
     public int compare(ModelPlayer player1, ModelPlayer player2) {

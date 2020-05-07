@@ -13,11 +13,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * InfoLabel is a Label class for this game menu.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class InfoLabel extends Label {
 
+    // string represent data file path
     private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
     private final String BACKGROUD_IMAGE = "view/resources/yellow_small_panel.png";
 
+    /**
+     * Label for displaying txt
+     * 
+     * @param txt to display
+     */
     public InfoLabel(String txt) {
         setPrefWidth(380);
         setPrefHeight(49);
@@ -31,6 +42,7 @@ public class InfoLabel extends Label {
         setBackground(new Background(bg));
     }
 
+    /** Set Font */
     private void setLabelFont() {
         try {
             setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));

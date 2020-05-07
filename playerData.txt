@@ -1,7 +1,8 @@
-yoyo 1000
-mr.compro 20
-unknow 15
+anonymous 4
+gg 29
 guita 10
 me 8
-sese 5
-anonymous 4
+mr.compro 20
+sese 35
+unknow 15
+yoyo 1000

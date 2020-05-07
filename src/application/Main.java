@@ -2,15 +2,15 @@ package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.ViewManeger;
+import view.ViewManager;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         // get main Stage from view
-        ViewManeger maneger = new ViewManeger();
-        primaryStage = maneger.getMainStage();
+        ViewManager manager = new ViewManager();
+        primaryStage = manager.getMainStage();
 
         primaryStage.setTitle("Penguin Space");
         primaryStage.show();

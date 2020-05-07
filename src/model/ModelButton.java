@@ -10,13 +10,25 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * ModelButton is a Button class for this game.
+ * 
+ * @author Nanthakarn Limkool
+ */
 public class ModelButton extends Button {
+
+    // string represent data file path
     private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
     private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
             + "('model/resources/yellow_button_pressed.png');";
     final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
             + "('model/resources/yellow_button.png');";
 
+    /**
+     * Button
+     * 
+     * @param txt to display on Button
+     */
     public ModelButton(String txt) {
         setText(txt);
         setButtonFont();
@@ -28,6 +40,7 @@ public class ModelButton extends Button {
         buttonListeners();
     }
 
+    /** Set Font */
     private void setButtonFont() {
         try {
             setFont(Font.loadFont(new FileInputStream(FONT_PATH), 23));
@@ -37,19 +50,23 @@ public class ModelButton extends Button {
 
     }
 
+    /** Set button style when pressed */
     private void setButtonStylePressed() {
         setStyle(BUTTON_PRESSED_STYLE);
         setPrefHeight(45);
         setLayoutY(getLayoutY() + 4);
     }
 
+    /** Set button style when free */
     private void setButtonStyleFree() {
         setStyle(BUTTON_FREE_STYLE);
         setPrefHeight(49);
         setLayoutY(getLayoutY() - 4);
     }
 
+    /** Set button listeners */
     private void buttonListeners() {
+        // set on Pressed
         setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -58,7 +75,7 @@ public class ModelButton extends Button {
                 }
             }
         });
-
+        // set on Released
         setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -67,14 +84,14 @@ public class ModelButton extends Button {
                 }
             }
         });
-
+        // set on Hover
         setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 setEffect(new DropShadow());
             }
         });
-
+        // set on not Hover
         setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
