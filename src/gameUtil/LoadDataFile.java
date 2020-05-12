@@ -36,7 +36,7 @@ public class LoadDataFile {
                     loadedMap.put(new ModelPlayer(inline[0], Integer.parseInt(inline[1])), inline[0]);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Read file 'playerData.txt' error!");
         }
         return loadedMap;
     }
@@ -65,7 +65,7 @@ public class LoadDataFile {
                 bOS.write(txt.getBytes());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Write file 'playerData.txt' error!");
         }
     }
 }

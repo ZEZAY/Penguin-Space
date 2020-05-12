@@ -1,15 +1,15 @@
 package model;
 
 /**
- * ModelPlayer is Player infomation use to ranking player score
+ * ModelPlayer is Player information use to ranking player score.
  * 
  * @author Nanthakarn Limkool
  */
 public class ModelPlayer implements Comparable<ModelPlayer> {
 
-    /** Player's name */
+    /** Player's name. */
     private String name;
-    /** Player's best score */
+    /** Player's best score. */
     private int score;
 
     public ModelPlayer(String name, int score) {
@@ -18,7 +18,7 @@ public class ModelPlayer implements Comparable<ModelPlayer> {
     }
 
     /**
-     * Reurn Player's name
+     * Return Player's name.
      * 
      * @return Player's name
      */
@@ -27,7 +27,7 @@ public class ModelPlayer implements Comparable<ModelPlayer> {
     }
 
     /**
-     * Return Player's best score
+     * Return Player's best score.
      * 
      * @return Player's best score
      */
@@ -36,7 +36,7 @@ public class ModelPlayer implements Comparable<ModelPlayer> {
     }
 
     /**
-     * Set new Player's best score
+     * Set new Player's best score.
      * 
      * @param score that wnat to set
      */

@@ -1,24 +1,24 @@
 package model;
 
 /**
- * Ship that player can choose
+ * Ship that player can choose.
  * 
  * @author Nanthakarn Limkool
  */
 public enum SHIP {
 
-    /** blue color ship */
+    /** blue color ship. */
     BLUE("view/resources/shipchooser/playerShip_blue.png", "view/resources/playerLife_blue.png"),
-    /** red color ship */
+    /** red color ship. */
     RED("view/resources/shipchooser/playerShip_red.png", "view/resources/playerLife_red.png"),
-    /** orange color ship */
+    /** orange color ship. */
     ORANGE("view/resources/shipchooser/playerShip_orange.png", "view/resources/playerLife_orange.png"),
-    /** green color ship */
+    /** green color ship. */
     GREEN("view/resources/shipchooser/playerShip_green.png", "view/resources/playerLife_green.png");
 
-    /** url for a playing Ship (bigger) */
+    /** url for a playing Ship (bigger). */
     private String urlShip;
-    /** url for a player life (smaller) */
+    /** url for a player life (smaller). */
     private String urlPlayerLifeShip;
 
     SHIP(String urlShip, String urlPlayerLifeShip) {
@@ -27,7 +27,7 @@ public enum SHIP {
     }
 
     /**
-     * Return playing ship url
+     * Return playing ship url.
      * 
      * @return urlShip
      */
@@ -36,7 +36,7 @@ public enum SHIP {
     }
 
     /**
-     * Return player life url
+     * Return player life url.
      * 
      * @return urlPlayerLifeShip
      */

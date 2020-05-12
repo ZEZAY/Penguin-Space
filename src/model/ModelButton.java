@@ -18,14 +18,13 @@ import java.io.FileNotFoundException;
 public class ModelButton extends Button {
 
     // string represent data file path
-    private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
-    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
-            + "('model/resources/yellow_button_pressed.png');";
-    final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
-            + "('model/resources/yellow_button.png');";
+    private static final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
+            + "('model/resources/yellow_button_pressed.png')";
+    final static String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url"
+            + "('model/resources/yellow_button.png')";
 
     /**
-     * Button
+     * Button.
      * 
      * @param txt to display on Button
      */
@@ -40,31 +39,31 @@ public class ModelButton extends Button {
         buttonListeners();
     }
 
-    /** Set Font */
+    /** Set Font. */
     private void setButtonFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(FONT_PATH), 23));
+            setFont(Font.loadFont(new FileInputStream("src/model/resources/kenvector_future_thin.ttf"), 23));
         } catch (FileNotFoundException e) {
             setFont(Font.font("Verdana, 23"));
         }
 
     }
 
-    /** Set button style when pressed */
+    /** Set button style when pressed. */
     private void setButtonStylePressed() {
         setStyle(BUTTON_PRESSED_STYLE);
         setPrefHeight(45);
         setLayoutY(getLayoutY() + 4);
     }
 
-    /** Set button style when free */
+    /** Set button style when free. */
     private void setButtonStyleFree() {
         setStyle(BUTTON_FREE_STYLE);
         setPrefHeight(49);
         setLayoutY(getLayoutY() - 4);
     }
 
-    /** Set button listeners */
+    /** Set button listeners. */
     private void buttonListeners() {
         // set on Pressed
         setOnMousePressed(new EventHandler<MouseEvent>() {
