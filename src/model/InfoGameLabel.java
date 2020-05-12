@@ -1,5 +1,6 @@
 package model;
 
+import gameutil.PropertyManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -21,11 +22,10 @@ import java.io.FileNotFoundException;
  */
 public class InfoGameLabel extends Label {
 
-    private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
-    private final String BACKGROUD_IMAGE = "view/resources/info_label.png";
+    private final PropertyManager property = PropertyManager.getInstance();
 
     /**
-     * Label for displaying txt
+     * Label for displaying txt.
      * 
      * @param txt to display
      */
@@ -37,15 +37,15 @@ public class InfoGameLabel extends Label {
         setText(txt);
         setLabelFont();
 
-        BackgroundImage bg = new BackgroundImage(new Image(BACKGROUD_IMAGE, 130, 50, false, true),
+        BackgroundImage bg = new BackgroundImage(new Image(property.getproperty("model.label"), 130, 50, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
         setBackground(new Background(bg));
     }
 
-    /** Set Font */
+    /** Set Font. */
     private void setLabelFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 16));
+            setFont(Font.loadFont(new FileInputStream(new File(property.getproperty("model.font"))), 16));
         } catch (FileNotFoundException e) {
             setFont(Font.font(("Verdana"), 16));
         }

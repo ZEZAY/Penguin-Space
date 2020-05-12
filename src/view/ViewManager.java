@@ -2,7 +2,10 @@ package view;
 
 import gameutil.LoadDataFile;
 import gameutil.MapComparator;
+import gameutil.PropertyManager;
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -23,59 +26,54 @@ import java.util.*;
  */
 public class ViewManager {
 
-    // string represent Scene size
-    private static final int WIDTH = 1024;
-    private static final int HEIGHT = 768;
-    // string represent menu notton layout
-    private static final int MENU_BUTTONS_START_X = 96;
-    private static final int MENU_BUTTONS_START_Y = 150;
+    private final PropertyManager property = PropertyManager.getInstance();
 
-    /** main's Pane (AnchorPane class) */
-    private AnchorPane mainPane;
-    /** main's Scene */
-    private Scene mainScene;
-    /** main's main Stage */
-    private Stage mainStage;
+    /** main's Pane (AnchorPane class). */
+    private final AnchorPane mainPane;
+    /** main's Scene. */
+    private final Scene mainScene;
+    /** main's main Stage. */
+    private final Stage mainStage;
 
-    /** List of menu buttons */
-    private List<ModelButton> menuButtons;
+    /** List of menu buttons. */
+    private final List<ModelButton> menuButtons;
 
     // Subscene
-    /** Subscene of menu "START" */
+    /** Subscene of menu "START". */
     private ModelSubscene startSubScene;
-    /** Subscene of menu "SCORES" */
+    /** Subscene of menu "SCORES". */
     private ModelSubscene scoresSubScene;
-    /** Subscene of menu "HELP" */
+    /** Subscene of menu "HELP". */
     private ModelSubscene helpSubScene;
-    /** Subscene of menu "CREDITS" */
+    /** Subscene of menu "CREDITS". */
     private ModelSubscene creditsSubScene;
-    /** Subscene of last opening menu */
+    /** Subscene of last opening menu. */
     private ModelSubscene sceneToHide;
 
-    /** List of ShipPicker that player can choose */
+    /** List of ShipPicker that player can choose. */
     private List<ShipPicker> ships;
-    /** player's current chosen ship */
+    /** player's current chosen ship. */
     private SHIP chosenShip;
 
-    /** Map of player ranking (sort by score) */
-    private Map<ModelPlayer, String> scoreBoard = new TreeMap<>(new MapComparator());
-    /** (VBox) Pane for score ranking */
-    private VBox vRankingBox = new VBox();
+    /** Map of player ranking (sort by score). */
+    private final Map<ModelPlayer, String> scoreBoard = new TreeMap<>(new MapComparator());
+    /** (VBox) Pane for score ranking. */
+    private final VBox vRankingBox = new VBox();
 
-    /** main's GameViewManager */
-    private GameViewManager gm = new GameViewManager();
-    /** main's LoadDataFile */
-    private LoadDataFile loadDataFile = new LoadDataFile();
+    /** main's GameViewManager. */
+    private final GameViewManager gm = new GameViewManager();
+    /** main's LoadDataFile. */
+    private final LoadDataFile loadDataFile = new LoadDataFile();
 
-    /** Current player's name */
+    /** Current player's name. */
     private String playerName;
-    /** Textfield for player's name */
+    /** Textfield for player's name. */
     private InfoTextfield playerNameField;
 
     public ViewManager() {
         menuButtons = new ArrayList<>();
         mainPane = new AnchorPane();
-        mainScene = new Scene(mainPane, WIDTH, HEIGHT);
+        mainScene = new Scene(mainPane, Double.parseDouble(property.getproperty("mainstage.width")), Double.parseDouble(property.getproperty("mainstage.height")));
         mainStage = new Stage();
         mainStage.setScene(mainScene);
 
@@ -86,18 +84,18 @@ public class ViewManager {
     }
 
     // Background
-    /** Create Background */
+    /** Create Background. */
     private void createBackground() {
-        Image BackgroundImage = new Image("view/resources/background_black.png", 256, 256, false, true);
-        BackgroundImage Background = new BackgroundImage(BackgroundImage, BackgroundRepeat.REPEAT,
+        Image backgroundImage = new Image(property.getproperty("game.background"), 256, 256, false, true);
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT,
                 BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
-        mainPane.setBackground(new Background(Background));
+        mainPane.setBackground(new Background(background));
     }
 
     // Logo
-    /** Create Logo */
+    /** Create Logo. */
     private void createLogo() {
-        ImageView logo = new ImageView("view/resources/logo.png");
+        ImageView logo = new ImageView(property.getproperty("game.logo"));
         logo.setLayoutX(400);
         logo.setLayoutY(50);
         logo.setOnMouseEntered(mouseEvent -> {
@@ -110,7 +108,7 @@ public class ViewManager {
     }
 
     // Menu Buttons
-    /** Create menu all buttons */
+    /** Create menu all buttons. */
     private void createMenuButtons() {
         createMenuButton("START");
         createMenuButton("SCORES");
@@ -121,34 +119,37 @@ public class ViewManager {
 
     /**
      * Create a button, set button text to "txt", 
-     * and add EventHandler for the botton.
+     * and add EventHandler for the button.
      * 
      * @param txt button's display text
      */
     private void createMenuButton(String txt) {
         ModelButton btn = new ModelButton(txt);
         addMenuButton(btn);
-        btn.setOnAction(actionEvent -> {
-            switch (txt) {
-                case "START":
-                    showSubScene(startSubScene);
-                    break;
-                case "SCORES":
-                    updateRanking();
-                    showSubScene(scoresSubScene);
-                    break;
-                case "HELP":
-                    showSubScene(helpSubScene);
-                    break;
-                case "CREDITS":
-                    showSubScene(creditsSubScene);
-                    break;
-                case "EXIT":
-                    updateRanking();
-                    mainStage.close();
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + txt);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                switch (txt) {
+                    case "START":
+                        showSubScene(startSubScene);
+                        break;
+                    case "SCORES":
+                        updateRanking();
+                        showSubScene(scoresSubScene);
+                        break;
+                    case "HELP":
+                        showSubScene(helpSubScene);
+                        break;
+                    case "CREDITS":
+                        showSubScene(creditsSubScene);
+                        break;
+                    case "EXIT":
+                        updateRanking();
+                        mainStage.close();
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + txt);
+                }
             }
         });
     }
@@ -159,8 +160,8 @@ public class ViewManager {
      * @param btn (new button) that want to add
      */
     private void addMenuButton(ModelButton btn) {
-        btn.setLayoutX(MENU_BUTTONS_START_X);
-        btn.setLayoutY(MENU_BUTTONS_START_Y + menuButtons.size() * 100);
+        btn.setLayoutX(Double.parseDouble(property.getproperty("mainstage.button_start_x")));
+        btn.setLayoutY(Double.parseDouble(property.getproperty("mainstage.button_start_y")) + menuButtons.size() * 100);
         menuButtons.add(btn);
         mainPane.getChildren().add(btn);
     }
@@ -189,7 +190,7 @@ public class ViewManager {
     }
 
     // startSubScene
-    /** Create startSubScene use for player to choose a ship (to play) */
+    /** Create startSubScene use for player to choose a ship (to play). */
     private void createShipChooserScene() {
         startSubScene = new ModelSubscene();
         // Scene title
@@ -279,7 +280,7 @@ public class ViewManager {
         scoreBoard.putAll(loadDataFile.loadMap());
     }
 
-    /** Update player ranking and player data file */
+    /** Update player ranking and player data file. */
     private void updateRanking() {
         // put new player/score to scoreBoard
         if (gm.getScore() > 0) {
@@ -311,7 +312,7 @@ public class ViewManager {
     }
 
     // helpSubScene
-    /** Create help scene */
+    /** Create help scene. */
     private void createHelpScene() {
         helpSubScene = new ModelSubscene();
         // Scene title
@@ -339,7 +340,7 @@ public class ViewManager {
     }
 
     // creditsSubScene
-    /** Create credits scene */
+    /** Create credits scene. */
     private void createCreditsScene() {
         creditsSubScene = new ModelSubscene();
         // Scene title
@@ -374,7 +375,7 @@ public class ViewManager {
     }
 
     /**
-     * Return mainStage
+     * Return mainStage.
      * 
      * @return mainStage
      */

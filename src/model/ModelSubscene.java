@@ -1,5 +1,6 @@
 package model;
 
+import gameutil.PropertyManager;
 import javafx.animation.TranslateTransition;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
@@ -13,10 +14,9 @@ import javafx.util.Duration;
  */
 public class ModelSubscene extends SubScene {
 
-    // string represent data file path
-    private final String BACKGROUD_IMAGE = "model/resources/yellow_panel.png";
+    private final PropertyManager property = PropertyManager.getInstance();
 
-    /** true when this Subscene is Hidden from the main Scene */
+    /** true when this Subscene is Hidden from the main Scene. */
     private boolean isHidden;
 
     public ModelSubscene() {
@@ -24,7 +24,7 @@ public class ModelSubscene extends SubScene {
         prefWidth(600);
         prefHeight(400);
 
-        BackgroundImage image = new BackgroundImage(new Image(BACKGROUD_IMAGE, 600, 400, false, true),
+        BackgroundImage image = new BackgroundImage(new Image(property.getproperty("model.subscene_background"), 600, 400, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
 
         AnchorPane root2 = (AnchorPane) this.getRoot();
@@ -35,7 +35,7 @@ public class ModelSubscene extends SubScene {
         setLayoutY(180);
     }
 
-    /** Slide this Scene to show/hide */
+    /** Slide this Scene to show/hide. */
     public void moveScene() {
         TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
 
@@ -50,7 +50,7 @@ public class ModelSubscene extends SubScene {
     }
 
     /**
-     * Return AnchorPane of this root
+     * Return AnchorPane of this root.
      * 
      * @return AnchorPane of this root
      */

@@ -1,5 +1,6 @@
 package view;
 
+import gameutil.PropertyManager;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -24,72 +25,60 @@ import java.util.Random;
  */
 public class GameViewManager {
 
-    // string represent Scene size
-    private static final int GAME_WIDTH = 600;
-    private static final int GAME_HEIGHT = 800;
-    // string represent data file path
-    private final String BACKGROUD_IMAGE = "view/resources/background_black.png";
-    private final String METEOR_GREY_IMAGE = "view/resources/meteorGrey_med1.png";
-    private final String METEOR_BROWN_IMAGE = "view/resources/meteorBrown_small2.png";
-    private final String STAR_IMAGE = "view/resources/star_gold.png";
-    // string represent item RADIUS
-    private final int SHIP_RADIUS = 45;
-    private final int STAR_RADIUS = 15;
-    private final int METEOR_GREY_RADIUS = 25;
-    private final int METEOR_BROWN_RADIUS = 15;
+    private final PropertyManager property = PropertyManager.getInstance();
 
-    /** game's Pane (AnchorPane class) */
+    /** game's Pane (AnchorPane class). */
     private AnchorPane gamePane;
-    /** game's Scene */
+    /** game's Scene. */
     private Scene gameScene;
-    /** game's main Stage */
+    /** game's main Stage. */
     private Stage gameStage;
     /**
-     * game's main Stage (need to hide befor start new stage(gameStage))
+     * game's main Stage (need to hide before start new stage(gameStage)).
      */
     private Stage mainStage;
 
-    // moving contorl key
+    // moving control key
     private boolean isLeftKeyPressed;
     private boolean isRightKeyPressed;
     private boolean isUpKeyPressed;
     private boolean isDownKeyPressed;
-    /** Ship's angle while playing */
+    /** Ship's angle while playing. */
     private int angle;
 
-    /** Animation for game loop */
+    /** Animation for game loop. */
     private AnimationTimer gameTimer;
-    /** background Pane for game loop */
+    /** background Pane for game loop. */
     private GridPane gridPane1;
-    /** background Pane for game loop */
+    /** background Pane for game loop. */
     private GridPane gridPane2;
-    /** Random for items new position (for game loop) */
+    /** Random for items new position (for game loop). */
     private Random randomPositionGenerators;
 
     // game's view items
-    /** game's Ship to play */
+    /** game's Ship to play. */
     private ImageView playerShip;
-    /** player's current score */
+    /** player's current score. */
     private int score;
-    /** number of total player life */
+    /** number of total player life. */
     private int playerLife;
-    /** game' Score label to display current score */
+    /** game' Score label to display current score. */
     private InfoGameLabel gameLabel;
 
     // game's score items
-    /** game's Star to gain score */
+    /** game's Star to gain score. */
     private ImageView star;
-    /** List of Text (words) to gain score */
+    /** List of Text (words) to gain score. */
     private List<Text> wordList;
-    /** game' word label to gain score */
+    /** game' word label to gain score. */
     private InfoLabel gameWordLabel;
 
     // game's item lists
-    /** Array of grey meteors */
+    /** Array of grey meteors. */
     private ImageView[] greyMeteors;
-    /** Array of brown meteors */
+    /** Array of brown meteors. */
     private ImageView[] brownMeteors;
-    /** Array of player lifes */
+    /** Array of player lifes. */
     private ImageView[] playerLifes;
 
     public GameViewManager() {
@@ -99,15 +88,15 @@ public class GameViewManager {
         randomPositionGenerators = new Random();
     }
 
-    /** Initialize component of game layout */
+    /** Initialize component of game layout. */
     private void initializeStage() {
         gamePane = new AnchorPane();
-        gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
+        gameScene = new Scene(gamePane, Double.parseDouble(property.getproperty("game.width")), Double.parseDouble(property.getproperty("game.height")));
         gameStage = new Stage();
         gameStage.setScene(gameScene);
     }
 
-    /** Handle events on key pressing */
+    /** Handle events on key pressing. */
     private void createKeyListeners() {
         // KeyPressed
         gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -188,13 +177,13 @@ public class GameViewManager {
     }
 
     // Background
-    /** Create Background */
+    /** Create Background. */
     private void createBackground() {
         gridPane1 = new GridPane();
         gridPane2 = new GridPane();
         for (int i = 0; i < 12; i++) {
-            ImageView bg1 = new ImageView(BACKGROUD_IMAGE);
-            ImageView bg2 = new ImageView(BACKGROUD_IMAGE);
+            ImageView bg1 = new ImageView(property.getproperty("game.background"));
+            ImageView bg2 = new ImageView(property.getproperty("game.background"));
             GridPane.setConstraints(bg1, i % 3, i / 3);
             GridPane.setConstraints(bg2, i % 3, i / 3);
             gridPane1.getChildren().add(bg1);
@@ -205,7 +194,7 @@ public class GameViewManager {
     }
 
     // WordLabel
-    /** Create GameWordLabel */
+    /** Create GameWordLabel. */
     private void createGameWordLabel() {
         gameWordLabel = new InfoLabel("");
         gameWordLabel.setLayoutX(25);
@@ -236,20 +225,20 @@ public class GameViewManager {
 
     // PlayerShip
     /**
-     * Create a ship
+     * Create a ship.
      * 
      * @param chosenShip Ship to play
      */
     private void createPlayerShip(SHIP chosenShip) {
         playerShip = new ImageView(chosenShip.getUrlShip());
         playerShip.setLayoutX(290);
-        playerShip.setLayoutY(GAME_HEIGHT - 90);
+        playerShip.setLayoutY(Double.parseDouble(property.getproperty("game.height")) - 90);
         gamePane.getChildren().add(playerShip);
     }
 
     // GameElements
     /**
-     * Create player's lifes, current score label, a star, word list, and meteors
+     * Create player's lifes, current score label, a star, word list, and meteors.
      * 
      * @param chosenShip Ship chosen to play
      */
@@ -271,7 +260,7 @@ public class GameViewManager {
         gamePane.getChildren().add(gameLabel);
 
         // create a star
-        star = new ImageView(STAR_IMAGE);
+        star = new ImageView(property.getproperty("game.star"));
         setGameElementNewPosition(star);
         gamePane.getChildren().add(star);
 
@@ -285,7 +274,7 @@ public class GameViewManager {
         // create grey meteors
         greyMeteors = new ImageView[3];
         for (int i = 0; i < greyMeteors.length; i++) {
-            greyMeteors[i] = new ImageView(METEOR_GREY_IMAGE);
+            greyMeteors[i] = new ImageView(property.getproperty("game.meteor_grey"));
             setGameElementNewPosition(greyMeteors[i]);
             gamePane.getChildren().add(greyMeteors[i]);
         }
@@ -293,7 +282,7 @@ public class GameViewManager {
         // create brown meteors
         brownMeteors = new ImageView[3];
         for (int i = 0; i < brownMeteors.length; i++) {
-            brownMeteors[i] = new ImageView(METEOR_BROWN_IMAGE);
+            brownMeteors[i] = new ImageView(property.getproperty("game.meteor_brown"));
             setGameElementNewPosition(brownMeteors[i]);
             gamePane.getChildren().add(brownMeteors[i]);
         }
@@ -335,7 +324,7 @@ public class GameViewManager {
         gameTimer.start();
     }
 
-    /** Set movement for Background */
+    /** Set movement for Background. */
     private void moveBackground() {
         gridPane1.setLayoutY(gridPane1.getLayoutY() + 0.5);
         gridPane2.setLayoutY(gridPane2.getLayoutY() + 0.5);
@@ -345,7 +334,7 @@ public class GameViewManager {
             gridPane2.setLayoutY(-1024);
     }
 
-    /** Set movement for GameElement */
+    /** Set movement for GameElement.*/
     private void moveGameElement() {
         // move star
         star.setLayoutY(star.getLayoutY() + 5);
@@ -374,7 +363,7 @@ public class GameViewManager {
         }
     }
 
-    /** Set movement for Ship */
+    /** Set movement for Ship. */
     private void moveShip() {
         if (isLeftKeyPressed) {
             if (angle > -30)
@@ -402,7 +391,7 @@ public class GameViewManager {
                 playerShip.setLayoutY(playerShip.getLayoutY() - 3);
         }
         if (isDownKeyPressed) {
-            if (playerShip.getLayoutY() < GAME_HEIGHT - 90)
+            if (playerShip.getLayoutY() < Double.parseDouble(property.getproperty("game.height")) - 90)
                 playerShip.setLayoutY(playerShip.getLayoutY() + 3);
         }
     }
@@ -410,21 +399,22 @@ public class GameViewManager {
     /** Check if Ship get hit by some GameElement. */
     private void checkIfElementsCollide() {
         // check hit star
-        if (STAR_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, star, 10, 8)) {
+        if (Double.parseDouble(property.getproperty("game.star_radius")) + Double.parseDouble(property.getproperty(
+                "game.ship_radius")) > calculateDistance(playerShip, star, 10, 8)) {
             setGameElementNewPosition(star);
             score++;
             gameLabel.setText("POINT: " + score);
         }
         // check hit grey meteor
         for (ImageView greyMeteor : greyMeteors) {
-            if (METEOR_GREY_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, greyMeteor, 18, 15)) {
+            if (Double.parseDouble(property.getproperty("game.meteor_grey_radius")) + Double.parseDouble(property.getproperty("game.ship_radius")) > calculateDistance(playerShip, greyMeteor, 18, 15)) {
                 setGameElementNewPosition(greyMeteor);
                 removePlayerLife();
             }
         }
         // check hit brown meteor
         for (ImageView brownMeteor : brownMeteors) {
-            if (METEOR_BROWN_RADIUS + SHIP_RADIUS > calculateDistance(playerShip, brownMeteor, 10, 8)) {
+            if (Double.parseDouble(property.getproperty("game.meteor_brown_radius")) + Double.parseDouble(property.getproperty("game.ship_radius")) > calculateDistance(playerShip, brownMeteor, 10, 8)) {
                 setGameElementNewPosition(brownMeteor);
                 removePlayerLife();
             }
@@ -469,7 +459,7 @@ public class GameViewManager {
     }
 
     /**
-     * Calculate distance between ship and item (GameElement)
+     * Calculate distance between ship and item (GameElement).
      * 
      * @param ship  player's ship
      * @param item  (GameElement) that want to focus
@@ -486,7 +476,7 @@ public class GameViewManager {
     }
 
     /**
-     * Return score
+     * Return score.
      * 
      * @return score
      */
@@ -495,7 +485,7 @@ public class GameViewManager {
     }
 
     /**
-     * Set Score to input score
+     * Set Score to input score.
      * 
      * @param score player's current score
      */

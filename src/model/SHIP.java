@@ -17,9 +17,9 @@ public enum SHIP {
     GREEN("view/resources/shipchooser/playerShip_green.png", "view/resources/playerLife_green.png");
 
     /** url for a playing Ship (bigger). */
-    private String urlShip;
+    private final String urlShip;
     /** url for a player life (smaller). */
-    private String urlPlayerLifeShip;
+    private final String urlPlayerLifeShip;
 
     SHIP(String urlShip, String urlPlayerLifeShip) {
         this.urlShip = urlShip;

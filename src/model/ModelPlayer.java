@@ -8,7 +8,7 @@ package model;
 public class ModelPlayer implements Comparable<ModelPlayer> {
 
     /** Player's name. */
-    private String name;
+    private final String name;
     /** Player's best score. */
     private int score;
 

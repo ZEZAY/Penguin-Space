@@ -1,5 +1,6 @@
 package model;
 
+import gameutil.PropertyManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -20,12 +21,10 @@ import java.io.FileNotFoundException;
  */
 public class InfoTextfield extends TextField {
 
-    // string represent data file path
-    private final String FONT_PATH = "src/model/resources/kenvector_future_thin.ttf";
-    private final String BACKGROUD_IMAGE = "view/resources/yellow_small_panel.png";
+    private final PropertyManager property = PropertyManager.getInstance();
 
     /**
-     * TextField for get and displaying txt
+     * TextField for get and displaying txt.
      * 
      * @param txt to display
      */
@@ -36,15 +35,16 @@ public class InfoTextfield extends TextField {
         setPromptText(txt);
         setTextfieldFont();
 
-        BackgroundImage bg = new BackgroundImage(new Image(BACKGROUD_IMAGE, 380, 49, false, true),
+        BackgroundImage bg = new BackgroundImage(new Image(property.getproperty("model.textfield_background"), 380,
+                49, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
         setBackground(new Background(bg));
     }
 
-    /** Set Font */
+    /** Set Font. */
     private void setTextfieldFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));
+            setFont(Font.loadFont(new FileInputStream(new File(property.getproperty("model.font"))), 23));
         } catch (FileNotFoundException e) {
             setFont(Font.font(("Verdana"), 23));
         }

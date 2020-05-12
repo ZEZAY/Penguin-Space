@@ -13,8 +13,7 @@ import java.util.TreeMap;
  */
 public class LoadDataFile {
 
-    // string represent data file path
-    private final String PLAYER_DATA_FILE = "playerData.txt";
+    private PropertyManager property = PropertyManager.getInstance();
 
     /**
      * Read and Return initial map from data file.
@@ -23,7 +22,7 @@ public class LoadDataFile {
      */
     public Map<ModelPlayer, String> loadMap() {
         Map<ModelPlayer, String> loadedMap = new TreeMap<>(new MapComparator());
-        File dataFile = new File(PLAYER_DATA_FILE);
+        File dataFile = new File(property.getproperty("data.playerData"));
         if (!dataFile.exists() || !dataFile.isFile())
             return loadedMap;
 
@@ -47,7 +46,7 @@ public class LoadDataFile {
      * @param newMap that want to update to data file
      */
     public void updateDataFile(Map<ModelPlayer, String> newMap) {
-        File dataFile = new File(PLAYER_DATA_FILE);
+        File dataFile = new File(property.getproperty("data.playerData"));
         if (!dataFile.exists()) {
             try {
                 dataFile.createNewFile();

@@ -1,5 +1,6 @@
 package model;
 
+import gameutil.PropertyManager;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,23 +13,21 @@ import javafx.scene.layout.VBox;
  */
 public class ShipPicker extends VBox {
 
-    /** ImageView of radio button */
-    private ImageView circleImage;
-    /** ImageView of ship */
-    private ImageView shipImage;
+    /** ImageView of radio button. */
+    private final ImageView circleImage;
+    /** ImageView of ship. */
+    private final ImageView shipImage;
 
-    // string represent data file path
-    private String CIRCLE_NOT_CHOOSEN = "view/resources/shipchooser/grey_circle.png";
-    private String CIRCLE_CHOOSEN = "view/resources/shipchooser/yellow_boxTick.png";
+    private final PropertyManager property = PropertyManager.getInstance();
 
-    /** ship to choose */
-    private SHIP ship;
+    /** ship to choose. */
+    private final SHIP ship;
 
-    /** true when this ship is Choosen */
+    /** true when this ship is Choosen. */
     private boolean isCircleChoosen;
 
     public ShipPicker(SHIP ship) {
-        circleImage = new ImageView(CIRCLE_NOT_CHOOSEN);
+        circleImage = new ImageView(property.getproperty("model.circle_not_choosen"));
         shipImage = new ImageView(ship.getUrlShip());
         this.ship = ship;
         isCircleChoosen = false;
@@ -39,7 +38,7 @@ public class ShipPicker extends VBox {
     }
 
     /**
-     * Return ship to choose
+     * Return ship to choose.
      * 
      * @return ship
      */
@@ -48,22 +47,13 @@ public class ShipPicker extends VBox {
     }
 
     /**
-     * Return true when this ship is Choosen
-     * 
-     * @return isCircleChoosen
-     */
-    public boolean getIsCircleChoosen() {
-        return isCircleChoosen;
-    }
-
-    /**
-     * Set isCircleChoosen
+     * Set isCircleChoosen.
      * 
      * @param isCircleChoosen true/false
      */
     public void setIsCircleChoosen(boolean isCircleChoosen) {
         this.isCircleChoosen = isCircleChoosen;
-        String imageToSet = (this.isCircleChoosen) ? CIRCLE_CHOOSEN : CIRCLE_NOT_CHOOSEN;
+        String imageToSet = (this.isCircleChoosen) ? property.getproperty("model.circle_choosen") : property.getproperty("model.circle_not_choosen");
         circleImage.setImage(new Image(imageToSet));
     }
 }
