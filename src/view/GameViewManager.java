@@ -72,6 +72,8 @@ public class GameViewManager {
     private List<Text> wordList;
     /** game' word label to gain score. */
     private InfoLabel gameWordLabel;
+    /** true if gameWordLabel is displayed. */
+    private boolean isUseWordField;
 
     // game's item lists
     /** Array of grey meteors. */
@@ -127,6 +129,7 @@ public class GameViewManager {
                         gameStage.close();
                         break;
                     default:
+                        if (!isUseWordField) dispiayWordLabel();
                         gameWordLabel.setText(gameWordLabel.getText() + code.getChar());
                         break;
                 }
@@ -199,7 +202,19 @@ public class GameViewManager {
         gameWordLabel = new InfoLabel("");
         gameWordLabel.setLayoutX(25);
         gameWordLabel.setLayoutY(90);
-        gamePane.getChildren().add(gameWordLabel);
+        isUseWordField = false;
+        dispiayWordLabel();
+    }
+
+    /** Check to hide and display WordLabel. */
+    private void dispiayWordLabel() {
+        if (isUseWordField){
+            gamePane.getChildren().remove(gameWordLabel);
+            isUseWordField = false;
+        } else {
+            gamePane.getChildren().add(gameWordLabel);
+            isUseWordField = true;
+        }
     }
 
     /**
@@ -208,6 +223,7 @@ public class GameViewManager {
      */
     private void checkWordLabel() {
         String word = gameWordLabel.getText();
+        dispiayWordLabel();
         // clear gameWordLabel
         gameWordLabel.setText("");
         for (Text text : wordList) {
